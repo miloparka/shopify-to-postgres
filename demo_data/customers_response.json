@@ -1,0 +1,141 @@
+{
+  "data": {
+    "customers": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/Customer/1",
+            "state": "ENABLED",
+            "verifiedEmail": true,
+            "taxExempt": false,
+            "numberOfOrders": "3",
+            "amountSpent": {
+              "amount": "42.50",
+              "currencyCode": "EUR"
+            },
+            "tags": [
+              "newsletter"
+            ],
+            "locale": "fi",
+            "defaultEmailAddress": {
+              "marketingState": "SUBSCRIBED"
+            },
+            "defaultAddress": {
+              "country": "Finland",
+              "province": "Uusimaa",
+              "city": "Helsinki"
+            },
+            "createdAt": "2025-11-02T10:00:00Z",
+            "updatedAt": "2026-08-01T09:00:00Z"
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Customer/2",
+            "state": "ENABLED",
+            "verifiedEmail": true,
+            "taxExempt": false,
+            "numberOfOrders": "1",
+            "amountSpent": {
+              "amount": "15.00",
+              "currencyCode": "EUR"
+            },
+            "tags": [],
+            "locale": "fi",
+            "defaultEmailAddress": {
+              "marketingState": "NOT_SUBSCRIBED"
+            },
+            "defaultAddress": {
+              "country": "Finland",
+              "province": "Uusimaa",
+              "city": "Espoo"
+            },
+            "createdAt": "2025-12-15T14:30:00Z",
+            "updatedAt": "2025-12-15T14:30:00Z"
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Customer/3",
+            "state": "ENABLED",
+            "verifiedEmail": true,
+            "taxExempt": false,
+            "numberOfOrders": "5",
+            "amountSpent": {
+              "amount": "88.20",
+              "currencyCode": "EUR"
+            },
+            "tags": [
+              "wholesale"
+            ],
+            "locale": "fi",
+            "defaultEmailAddress": {
+              "marketingState": "SUBSCRIBED"
+            },
+            "defaultAddress": {
+              "country": "Finland",
+              "province": "Pirkanmaa",
+              "city": "Tampere"
+            },
+            "createdAt": "2025-09-20T08:15:00Z",
+            "updatedAt": "2026-09-01T11:20:00Z"
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Customer/4",
+            "state": "ENABLED",
+            "verifiedEmail": false,
+            "taxExempt": false,
+            "numberOfOrders": "0",
+            "amountSpent": {
+              "amount": "0.00",
+              "currencyCode": "EUR"
+            },
+            "tags": [],
+            "locale": "fi",
+            "defaultEmailAddress": null,
+            "defaultAddress": {
+              "country": "Finland",
+              "province": "Varsinais-Suomi",
+              "city": "Turku"
+            },
+            "createdAt": "2026-08-30T16:45:00Z",
+            "updatedAt": "2026-08-30T16:45:00Z"
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Customer/5",
+            "state": "ENABLED",
+            "verifiedEmail": true,
+            "taxExempt": false,
+            "numberOfOrders": "8",
+            "amountSpent": {
+              "amount": "210.75",
+              "currencyCode": "EUR"
+            },
+            "tags": [
+              "vip"
+            ],
+            "locale": "fi",
+            "defaultEmailAddress": {
+              "marketingState": "SUBSCRIBED"
+            },
+            "defaultAddress": {
+              "country": "Finland",
+              "province": "Pohjois-Pohjanmaa",
+              "city": "Oulu"
+            },
+            "createdAt": "2025-06-11T12:00:00Z",
+            "updatedAt": "2026-09-05T10:10:00Z"
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      }
+    }
+  }
+}

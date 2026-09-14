@@ -1,0 +1,626 @@
+{
+  "data": {
+    "orders": {
+      "edges": [
+        {
+          "node": {
+            "id": "gid://shopify/Order/201",
+            "name": "#1001",
+            "createdAt": "2026-08-01T09:00:00Z",
+            "updatedAt": "2026-08-01T09:00:00Z",
+            "processedAt": "2026-08-01T09:00:00Z",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "closedAt": "2026-08-01T09:00:00Z",
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "sourceName": "web",
+            "tags": [],
+            "discountCodes": [],
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "15.05",
+                "currencyCode": "EUR"
+              }
+            },
+            "currentSubtotalPriceSet": {
+              "shopMoney": {
+                "amount": "10.57"
+              }
+            },
+            "currentTotalTaxSet": {
+              "shopMoney": {
+                "amount": "1.48"
+              }
+            },
+            "currentTotalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00"
+              }
+            },
+            "currentShippingPriceSet": {
+              "shopMoney": {
+                "amount": "3.00"
+              }
+            },
+            "shippingLine": {
+              "title": "Standard Shipping",
+              "code": "STANDARD",
+              "originalPriceSet": {
+                "shopMoney": {
+                  "amount": "3.00"
+                }
+              }
+            },
+            "shippingAddress": {
+              "country": "Finland",
+              "province": "Uusimaa",
+              "city": "City A"
+            },
+            "customer": {
+              "id": "gid://shopify/Customer/1"
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/301",
+                    "title": "Fruit Chew Candy 14g",
+                    "sku": "900001",
+                    "quantity": 2,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "0.89"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/101"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1011"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/302",
+                    "title": "Corn Chips Bag 185g",
+                    "sku": "900003",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "2.29"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/103"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1031"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/303",
+                    "title": "Dried Birch Whisk",
+                    "sku": "900005",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "6.50"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/105"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1051"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Order/202",
+            "name": "#1002",
+            "createdAt": "2025-12-15T14:30:00Z",
+            "updatedAt": "2025-12-15T14:30:00Z",
+            "processedAt": "2025-12-15T14:30:00Z",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "closedAt": "2025-12-15T14:30:00Z",
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "sourceName": "web",
+            "tags": [
+              "gift"
+            ],
+            "discountCodes": [],
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "35.41",
+                "currencyCode": "EUR"
+              }
+            },
+            "currentSubtotalPriceSet": {
+              "shopMoney": {
+                "amount": "25.01"
+              }
+            },
+            "currentTotalTaxSet": {
+              "shopMoney": {
+                "amount": "3.50"
+              }
+            },
+            "currentTotalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00"
+              }
+            },
+            "currentShippingPriceSet": {
+              "shopMoney": {
+                "amount": "6.90"
+              }
+            },
+            "shippingLine": {
+              "title": "Express Courier",
+              "code": "EXPRESS",
+              "originalPriceSet": {
+                "shopMoney": {
+                  "amount": "6.90"
+                }
+              }
+            },
+            "shippingAddress": {
+              "country": "Finland",
+              "province": "Uusimaa",
+              "city": "City B"
+            },
+            "customer": {
+              "id": "gid://shopify/Customer/2"
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/304",
+                    "title": "Family Board Game",
+                    "sku": "900004",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "14.90"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/104"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1041"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/305",
+                    "title": "Oat Porridge 1kg",
+                    "sku": "900007",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "2.99"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/107"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1071"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/306",
+                    "title": "Fruit Chew Candy 14g",
+                    "sku": "900001",
+                    "quantity": 8,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "0.89"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/101"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1011"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Order/203",
+            "name": "#1003",
+            "createdAt": "2026-09-01T11:20:00Z",
+            "updatedAt": "2026-09-01T11:20:00Z",
+            "processedAt": "2026-09-01T11:20:00Z",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "closedAt": null,
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "PARTIAL",
+            "sourceName": "web",
+            "tags": [
+              "wholesale"
+            ],
+            "discountCodes": [
+              "WELCOME10"
+            ],
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "28.48",
+                "currencyCode": "EUR"
+              }
+            },
+            "currentSubtotalPriceSet": {
+              "shopMoney": {
+                "amount": "22.35"
+              }
+            },
+            "currentTotalTaxSet": {
+              "shopMoney": {
+                "amount": "3.13"
+              }
+            },
+            "currentTotalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00"
+              }
+            },
+            "currentShippingPriceSet": {
+              "shopMoney": {
+                "amount": "3.00"
+              }
+            },
+            "shippingLine": {
+              "title": "Standard Shipping",
+              "code": "STANDARD",
+              "originalPriceSet": {
+                "shopMoney": {
+                  "amount": "3.00"
+                }
+              }
+            },
+            "shippingAddress": {
+              "country": "Finland",
+              "province": "Pirkanmaa",
+              "city": "City C"
+            },
+            "customer": {
+              "id": "gid://shopify/Customer/3"
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/307",
+                    "title": "Aged Cheese Wedge 400g",
+                    "sku": "900002",
+                    "quantity": 3,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "3.49"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/102"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1021"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/308",
+                    "title": "Chocolate Truffle Box 200g",
+                    "sku": "900006",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "5.90"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/106"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1061"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/309",
+                    "title": "Oat Porridge 1kg",
+                    "sku": "900007",
+                    "quantity": 2,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "2.99"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/107"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1071"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Order/204",
+            "name": "#1004",
+            "createdAt": "2026-09-05T10:10:00Z",
+            "updatedAt": "2026-09-05T10:10:00Z",
+            "processedAt": "2026-09-05T10:10:00Z",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "closedAt": "2026-09-05T10:10:00Z",
+            "displayFinancialStatus": "PAID",
+            "displayFulfillmentStatus": "FULFILLED",
+            "sourceName": "pos",
+            "tags": [],
+            "discountCodes": [],
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "19.02",
+                "currencyCode": "EUR"
+              }
+            },
+            "currentSubtotalPriceSet": {
+              "shopMoney": {
+                "amount": "16.68"
+              }
+            },
+            "currentTotalTaxSet": {
+              "shopMoney": {
+                "amount": "2.34"
+              }
+            },
+            "currentTotalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00"
+              }
+            },
+            "currentShippingPriceSet": {
+              "shopMoney": {
+                "amount": "0.00"
+              }
+            },
+            "shippingLine": {
+              "title": "Store Pickup",
+              "code": "PICKUP",
+              "originalPriceSet": {
+                "shopMoney": {
+                  "amount": "0.00"
+                }
+              }
+            },
+            "shippingAddress": {
+              "country": "Finland",
+              "province": "Pohjois-Pohjanmaa",
+              "city": "City D"
+            },
+            "customer": {
+              "id": "gid://shopify/Customer/5"
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/310",
+                    "title": "Family Board Game",
+                    "sku": "900004",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "14.90"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/104"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1041"
+                    }
+                  }
+                },
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/311",
+                    "title": "Fruit Chew Candy 14g",
+                    "sku": "900001",
+                    "quantity": 2,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "0.89"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/101"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1011"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "node": {
+            "id": "gid://shopify/Order/205",
+            "name": "#1005",
+            "createdAt": "2026-06-20T13:00:00Z",
+            "updatedAt": "2026-06-20T13:00:00Z",
+            "processedAt": "2026-06-20T13:00:00Z",
+            "cancelledAt": null,
+            "cancelReason": null,
+            "closedAt": "2026-06-20T13:00:00Z",
+            "displayFinancialStatus": "REFUNDED",
+            "displayFulfillmentStatus": "FULFILLED",
+            "sourceName": "web",
+            "tags": [],
+            "discountCodes": [],
+            "currentTotalPriceSet": {
+              "shopMoney": {
+                "amount": "10.41",
+                "currencyCode": "EUR"
+              }
+            },
+            "currentSubtotalPriceSet": {
+              "shopMoney": {
+                "amount": "6.50"
+              }
+            },
+            "currentTotalTaxSet": {
+              "shopMoney": {
+                "amount": "0.91"
+              }
+            },
+            "currentTotalDiscountsSet": {
+              "shopMoney": {
+                "amount": "0.00"
+              }
+            },
+            "currentShippingPriceSet": {
+              "shopMoney": {
+                "amount": "3.00"
+              }
+            },
+            "shippingLine": {
+              "title": "Standard Shipping",
+              "code": "STANDARD",
+              "originalPriceSet": {
+                "shopMoney": {
+                  "amount": "3.00"
+                }
+              }
+            },
+            "shippingAddress": {
+              "country": "Finland",
+              "province": "Pohjois-Pohjanmaa",
+              "city": "City D"
+            },
+            "customer": {
+              "id": "gid://shopify/Customer/5"
+            },
+            "lineItems": {
+              "edges": [
+                {
+                  "node": {
+                    "id": "gid://shopify/LineItem/312",
+                    "title": "Dried Birch Whisk",
+                    "sku": "900005",
+                    "quantity": 1,
+                    "originalUnitPriceSet": {
+                      "shopMoney": {
+                        "amount": "6.50"
+                      }
+                    },
+                    "totalDiscountSet": {
+                      "shopMoney": {
+                        "amount": "0.00"
+                      }
+                    },
+                    "product": {
+                      "id": "gid://shopify/Product/105"
+                    },
+                    "variant": {
+                      "id": "gid://shopify/ProductVariant/1051"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      }
+    }
+  }
+}

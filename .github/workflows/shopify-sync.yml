@@ -1,0 +1,56 @@
+name: Shopify -> Supabase sync
+
+# Runs the incremental sync on a schedule, and lets you trigger a run by
+# hand from the Actions tab (with the option to force a full resync
+# instead of the default incremental one -- see the `full_sync` input).
+on:
+  schedule:
+    # Every 6 hours. Cron is in UTC -- adjust to taste. GitHub Actions
+    # schedules are best-effort and can be delayed a few minutes during
+    # high load, which is fine here since this is just an incremental
+    # catch-up, not a time-critical job.
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      full_sync:
+        description: "Force a full resync instead of incremental"
+        type: boolean
+        default: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    # Generous ceiling in case a run ever falls back to a full resync
+    # (tens of thousands of customers) instead of a quick incremental one.
+    timeout-minutes: 120
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run sync
+        env:
+          MODE: live
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
+          SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+          FULL_SYNC: ${{ inputs.full_sync && 'true' || 'false' }}
+        run: python -m sync.sync_all
+
+      - name: Notify Slack on failure
+        if: failure()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          curl -sS -X POST -H 'Content-type: application/json' \
+            -d "$(jq -n --arg text "Shopify sync FAILED: ${{ github.workflow }} run #${{ github.run_number }} -- ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" '{text: $text}')" \
+            "$SLACK_WEBHOOK_URL"

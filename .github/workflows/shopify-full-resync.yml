@@ -1,0 +1,62 @@
+name: Shopify -> Supabase monthly full resync
+
+# Incremental syncs (shopify-sync.yml) only catch created/changed records --
+# a record deleted in Shopify never shows up as "updated," so it never gets
+# removed from Supabase by an incremental run. This runs a full resync once
+# a month to reconcile that drift. See the "Deletions aren't reconciled by
+# incremental sync" note in the project's schema/PII notes doc.
+on:
+  schedule:
+    # 03:00 UTC on the 1st of each month.
+    - cron: "0 3 1 * *"
+  workflow_dispatch: {}
+
+jobs:
+  full-resync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run full sync
+        env:
+          MODE: live
+          FULL_SYNC: "true"
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          SHOPIFY_STORE_URL: ${{ secrets.SHOPIFY_STORE_URL }}
+          SHOPIFY_ACCESS_TOKEN: ${{ secrets.SHOPIFY_ACCESS_TOKEN }}
+        run: |
+          set -o pipefail
+          python -m sync.sync_all 2>&1 | tee sync_output.log
+
+      # A run that hits timeout-minutes above is marked "cancelled" by
+      # GitHub, not "failed" -- if: failure() alone would silently miss
+      # that case, which is exactly the kind of run worth knowing about.
+      - name: Notify Slack on failure
+        if: failure() || cancelled()
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        run: |
+          if [ "${{ job.status }}" = "cancelled" ]; then
+            REASON="Job was cancelled -- likely hit this workflow's timeout-minutes limit, or was manually cancelled."
+          else
+            REASON=$(grep "SYNC_FAILURE_REASON:" sync_output.log 2>/dev/null | tail -n1 | sed 's/^SYNC_FAILURE_REASON: //')
+            if [ -z "$REASON" ]; then
+              REASON="Sync step failed before a specific reason could be captured -- check the full log."
+            fi
+          fi
+          MSG=$(printf 'Shopify FULL resync FAILED: %s run #%s\nReason: %s\nLog: %s' "${{ github.workflow }}" "${{ github.run_number }}" "$REASON" "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}")
+          curl -sS -X POST -H 'Content-type: application/json' \
+            -d "$(jq -n --arg text "$MSG" '{text: $text}')" \
+            "$SLACK_WEBHOOK_URL"
