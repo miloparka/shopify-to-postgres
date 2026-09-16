@@ -1,7 +1,8 @@
 """
 Transform raw Shopify-shaped nodes (nested JSON) into flat dicts matching
 the actual Supabase table columns: customers, products, product_variants,
-product_images, orders, order_line_items, order_shipping_lines.
+product_images, orders, order_line_items, order_shipping_lines,
+order_line_item_tax_lines, order_shipping_line_tax_lines.
 
 This is the one place that has to know about both shapes -- everything
 upstream (data sources) and downstream (the DB client) stays simple.
@@ -51,6 +52,37 @@ def _sum_discount_allocations(allocations: list[dict] | None) -> float:
     # otherwise leave a value like 3.8999999999999995 that's cosmetically
     # wrong (though the numeric(12,2) column would round it on write anyway).
     return round(total, 2)
+
+
+def _map_tax_lines(tax_lines: list[dict] | None) -> list[dict]:
+    """Map Shopify's raw TaxLine nodes (title, rate, ratePercentage,
+    priceSet, source, channelLiable) into flat dicts with the common
+    columns shared by order_line_item_tax_lines and
+    order_shipping_line_tax_lines -- same TaxLine shape appears on both
+    LineItem and ShippingLine, just attached to a different parent, so one
+    mapper covers both. The caller adds whichever foreign key column
+    (line_item_id / order_id) applies for its parent.
+
+    Deliberately NOT reading Order.taxLines/currentTaxLines here -- that's
+    the order-level aggregate this schema already captures as
+    orders.total_tax. This only handles the per-line/per-shipping
+    breakdown that a single order-level number collapses away, which is
+    the actual gap: Shopify only ever showed one order-level tax total
+    before this, even though it always had the real per-line rates.
+    """
+    rows = []
+    for tax_line in tax_lines or []:
+        rows.append({
+            "title": tax_line.get("title"),
+            "rate": float(tax_line["rate"]) if tax_line.get("rate") is not None else None,
+            "rate_percentage": float(tax_line["ratePercentage"])
+            if tax_line.get("ratePercentage") is not None
+            else None,
+            "amount": _money(tax_line.get("priceSet")),
+            "source": tax_line.get("source"),
+            "channel_liable": tax_line.get("channelLiable"),
+        })
+    return rows
 
 
 def _prorate_for_current_quantity(discount: float, quantity: int, current_quantity: int) -> float:
@@ -179,9 +211,10 @@ def transform_images(node: dict, product_id: int) -> list[dict]:
     return rows
 
 
-def transform_order(node: dict) -> tuple[dict, list[dict]]:
-    """Returns (order_row, line_item_rows) -- an order and its line items
-    arrive nested in one node, so they're unpacked together."""
+def transform_order(node: dict) -> tuple[dict, list[dict], list[dict]]:
+    """Returns (order_row, line_item_rows, line_item_tax_line_rows) -- an
+    order, its line items, and each line item's own tax lines all arrive
+    nested in one node, so they're unpacked together."""
     customer = node.get("customer")
     shipping_addr = node.get("shippingAddress") or {}
     shipping_line = node.get("shippingLine") or {}
@@ -213,6 +246,7 @@ def transform_order(node: dict) -> tuple[dict, list[dict]]:
     }
 
     line_item_rows = []
+    line_item_tax_line_rows = []
     for edge in node["lineItems"]["edges"]:
         li = edge["node"]
         product = li.get("product")
@@ -224,8 +258,9 @@ def transform_order(node: dict) -> tuple[dict, list[dict]]:
         # than what's actually there.
         current_quantity = li.get("currentQuantity", quantity)
         raw_discount = _sum_discount_allocations(li.get("discountAllocations"))
+        line_item_id = extract_numeric_id(li["id"])
         line_item_rows.append({
-            "id": extract_numeric_id(li["id"]),
+            "id": line_item_id,
             "order_id": extract_numeric_id(node["id"]),
             "product_id": extract_numeric_id(product["id"]) if product else None,
             "variant_id": extract_numeric_id(variant["id"]) if variant else None,
@@ -236,8 +271,11 @@ def transform_order(node: dict) -> tuple[dict, list[dict]]:
             "total_discount": _prorate_for_current_quantity(raw_discount, quantity, current_quantity),
             "fulfillment_status": li.get("fulfillmentStatus"),
         })
+        for tax_row in _map_tax_lines(li.get("taxLines")):
+            tax_row["line_item_id"] = line_item_id
+            line_item_tax_line_rows.append(tax_row)
 
-    return order_row, line_item_rows
+    return order_row, line_item_rows, line_item_tax_line_rows
 
 
 def transform_shipping_line(node: dict) -> dict | None:
@@ -250,3 +288,26 @@ def transform_shipping_line(node: dict) -> dict | None:
         "price": _money(shipping_line.get("originalPriceSet")),
         "code": shipping_line.get("code"),
     }
+
+
+def transform_shipping_line_tax_lines(node: dict) -> list[dict]:
+    """Returns the order's shipping-line tax lines, keyed by order_id.
+
+    Keyed by order_id rather than order_shipping_lines' own id on purpose:
+    that id is a synthetic `generated always as identity` column that gets
+    a fresh value every sync (order_shipping_lines is deleted and
+    reinserted per order, never upserted -- see sync/sync_all.py), so a
+    child table FK'd to it would go stale the moment a new id was
+    assigned. order_id is stable, and today's query only ever returns one
+    shipping line per order (Order.shippingLine, the singular deprecated
+    field -- not the shippingLines connection), so it's already
+    effectively a 1:1 key here.
+    """
+    shipping_line = node.get("shippingLine")
+    if not shipping_line:
+        return []
+    order_id = extract_numeric_id(node["id"])
+    rows = _map_tax_lines(shipping_line.get("taxLines"))
+    for row in rows:
+        row["order_id"] = order_id
+    return rows
