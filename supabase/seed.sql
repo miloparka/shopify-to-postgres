@@ -92,3 +92,43 @@ insert into order_shipping_lines (order_id, title, price, code) values
   (203, 'Standard Shipping', 3.00, 'STANDARD'),
   (204, 'Store Pickup',      0.00, 'PICKUP'),
   (205, 'Standard Shipping', 3.00, 'STANDARD');
+
+-- ---------------------------------------------
+-- ORDER_LINE_ITEM_TAX_LINES
+-- Illustrative rates only (not verified against this store's actual tax
+-- settings -- confirm real rates from a live order before relying on
+-- these numbers for anything). Food-tagged products get a reduced rate,
+-- everything else the standard rate, purely to demonstrate that Shopify
+-- tracks a real per-line-item rate rather than one blended order total.
+-- Line item 312 (order 205) deliberately has no rows -- exercises the
+-- "no tax lines captured for this line" path (e.g. an order synced
+-- before this feature existed).
+-- ---------------------------------------------
+insert into order_line_item_tax_lines (line_item_id, title, rate, rate_percentage, amount, source, channel_liable) values
+  (301, 'VAT', 0.135, 13.5, 0.24, 'Shopify', false),
+  (302, 'VAT', 0.135, 13.5, 0.31, 'Shopify', false),
+  (303, 'VAT', 0.255, 25.5, 1.66, 'Shopify', false),
+
+  (304, 'VAT', 0.255, 25.5, 3.80, 'Shopify', false),
+  (305, 'VAT', 0.135, 13.5, 0.40, 'Shopify', false),
+  (306, 'VAT', 0.135, 13.5, 0.96, 'Shopify', false),
+
+  (307, 'VAT', 0.135, 13.5, 1.41, 'Shopify', false),
+  (308, 'VAT', 0.135, 13.5, 0.80, 'Shopify', false),
+  (309, 'VAT', 0.135, 13.5, 0.81, 'Shopify', false),
+
+  (310, 'VAT', 0.255, 25.5, 3.80, 'Shopify', false),
+  (311, 'VAT', 0.135, 13.5, 0.24, 'Shopify', false);
+
+-- ---------------------------------------------
+-- ORDER_SHIPPING_LINE_TAX_LINES
+-- Keyed by order_id, not order_shipping_lines.id -- see the migration's
+-- comment for why. Order 204's shipping is a free Store Pickup (price
+-- 0.00) and order 205 has no captured tax lines at all -- both left
+-- without rows on purpose, to demonstrate that a shipping line can
+-- legitimately have no tax line (free shipping) or none captured yet.
+-- ---------------------------------------------
+insert into order_shipping_line_tax_lines (order_id, title, rate, rate_percentage, amount, source, channel_liable) values
+  (201, 'VAT', 0.255, 25.5, 0.77, 'Shopify', false),
+  (202, 'VAT', 0.255, 25.5, 1.76, 'Shopify', false),
+  (203, 'VAT', 0.255, 25.5, 0.77, 'Shopify', false);

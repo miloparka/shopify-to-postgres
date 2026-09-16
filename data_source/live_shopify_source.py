@@ -18,6 +18,14 @@ from .interface import ShopifyDataSource
 # fine for this store's catalog size, but if any product/order ever has
 # more than 50 variants/images/line items, those would need their own
 # nested pagination too.
+#
+# Tax capture: LineItem.taxLines and ShippingLine.taxLines give the real
+# per-line/per-shipping tax breakdown (rate, ratePercentage, amount,
+# source, channelLiable) -- separate from Order.taxLines/currentTaxLines,
+# which is just the order-level aggregate this schema already stores as
+# orders.total_tax. A TaxLine has no id of its own, so these are mapped in
+# sync/transform.py and cleared+reinserted each sync the same way
+# order_shipping_lines already is (see sync/sync_all.py).
 
 PRODUCTS_QUERY = """
 query Products($cursor: String, $query: String) {
@@ -127,7 +135,19 @@ query Orders($cursor: String, $query: String) {
         currentTotalTaxSet { shopMoney { amount } }
         currentTotalDiscountsSet { shopMoney { amount } }
         currentShippingPriceSet { shopMoney { amount } }
-        shippingLine { title code originalPriceSet { shopMoney { amount } } }
+        shippingLine {
+          title
+          code
+          originalPriceSet { shopMoney { amount } }
+          taxLines {
+            title
+            rate
+            ratePercentage
+            priceSet { shopMoney { amount } }
+            source
+            channelLiable
+          }
+        }
         shippingAddress { country province city }
         customer { id }
         lineItems(first: 20) {
@@ -141,6 +161,14 @@ query Orders($cursor: String, $query: String) {
               fulfillmentStatus
               originalUnitPriceSet { shopMoney { amount } }
               discountAllocations { allocatedAmountSet { shopMoney { amount } } }
+              taxLines {
+                title
+                rate
+                ratePercentage
+                priceSet { shopMoney { amount } }
+                source
+                channelLiable
+              }
               product { id }
               variant { id }
             }

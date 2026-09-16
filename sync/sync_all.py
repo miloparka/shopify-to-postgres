@@ -46,6 +46,7 @@ from sync.transform import (
     transform_order,
     transform_product,
     transform_shipping_line,
+    transform_shipping_line_tax_lines,
     transform_variants,
 )
 
@@ -155,23 +156,43 @@ def sync_orders(source, supabase, updated_since: str | None = None):
     raw_orders = source.get_orders(updated_since)
     order_rows = []
     line_item_rows = []
+    line_item_tax_line_rows = []
     shipping_line_rows = []
+    shipping_line_tax_line_rows = []
     order_ids = []
+    line_item_ids = []
 
     for node in raw_orders:
-        order_row, items = transform_order(node)
+        order_row, items, item_tax_lines = transform_order(node)
         order_rows.append(order_row)
         line_item_rows.extend(items)
+        line_item_tax_line_rows.extend(item_tax_lines)
+        line_item_ids.extend(item["id"] for item in items)
         order_ids.append(order_row["id"])
 
         shipping_line = transform_shipping_line(node)
         if shipping_line:
             shipping_line_rows.append(shipping_line)
+        shipping_line_tax_line_rows.extend(transform_shipping_line_tax_lines(node))
 
     if order_rows:
         _upsert_in_batches(supabase, "orders", order_rows)
     if line_item_rows:
         _upsert_in_batches(supabase, "order_line_items", line_item_rows)
+
+    if line_item_ids:
+        # order_line_item_tax_lines has no natural Shopify id to upsert
+        # against either (a TaxLine doesn't carry one) -- but line_item_id
+        # IS stable, since order_line_items is upserted against Shopify's
+        # own id, so clearing and re-inserting by line_item_id is safe and
+        # idempotent, same reasoning as order_shipping_lines below.
+        line_item_ids = list(dict.fromkeys(line_item_ids))
+        for i in range(0, len(line_item_ids), BATCH_SIZE):
+            supabase.table("order_line_item_tax_lines").delete().in_(
+                "line_item_id", line_item_ids[i:i + BATCH_SIZE]
+            ).execute()
+    if line_item_tax_line_rows:
+        _insert_in_batches(supabase, "order_line_item_tax_lines", line_item_tax_line_rows)
 
     if order_ids:
         # order_shipping_lines has no natural Shopify id to upsert against
@@ -184,12 +205,22 @@ def sync_orders(source, supabase, updated_since: str | None = None):
             supabase.table("order_shipping_lines").delete().in_(
                 "order_id", order_ids[i:i + BATCH_SIZE]
             ).execute()
+            # order_shipping_line_tax_lines is keyed by order_id rather
+            # than order_shipping_lines' own id (see transform.py's
+            # transform_shipping_line_tax_lines for why), so it's cleared
+            # in the same pass, by the same order_ids.
+            supabase.table("order_shipping_line_tax_lines").delete().in_(
+                "order_id", order_ids[i:i + BATCH_SIZE]
+            ).execute()
     if shipping_line_rows:
         _insert_in_batches(supabase, "order_shipping_lines", shipping_line_rows)
+    if shipping_line_tax_line_rows:
+        _insert_in_batches(supabase, "order_shipping_line_tax_lines", shipping_line_tax_line_rows)
 
     print(
-        f"Synced {len(order_rows)} orders, {len(line_item_rows)} line items, "
-        f"{len(shipping_line_rows)} shipping lines"
+        f"Synced {len(order_rows)} orders, {len(line_item_rows)} line items "
+        f"({len(line_item_tax_line_rows)} tax lines), {len(shipping_line_rows)} "
+        f"shipping lines ({len(shipping_line_tax_line_rows)} tax lines)"
     )
 
 

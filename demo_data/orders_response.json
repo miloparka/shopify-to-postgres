@@ -50,7 +50,21 @@
                 "shopMoney": {
                   "amount": "3.00"
                 }
-              }
+              },
+              "taxLines": [
+                {
+                  "title": "VAT",
+                  "rate": 0.255,
+                  "ratePercentage": 25.5,
+                  "priceSet": {
+                    "shopMoney": {
+                      "amount": "0.77"
+                    }
+                  },
+                  "source": "Shopify",
+                  "channelLiable": false
+                }
+              ]
             },
             "shippingAddress": {
               "country": "Finland",
@@ -80,7 +94,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1011"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.24"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -101,7 +129,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1031"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.31"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -122,7 +164,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1051"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.255,
+                        "ratePercentage": 25.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "1.66"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 }
               ]
@@ -179,7 +235,21 @@
                 "shopMoney": {
                   "amount": "6.90"
                 }
-              }
+              },
+              "taxLines": [
+                {
+                  "title": "VAT",
+                  "rate": 0.255,
+                  "ratePercentage": 25.5,
+                  "priceSet": {
+                    "shopMoney": {
+                      "amount": "1.76"
+                    }
+                  },
+                  "source": "Shopify",
+                  "channelLiable": false
+                }
+              ]
             },
             "shippingAddress": {
               "country": "Finland",
@@ -209,7 +279,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1041"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.255,
+                        "ratePercentage": 25.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "3.80"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -230,7 +314,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1071"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.40"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -251,7 +349,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1011"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.96"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 }
               ]
@@ -310,7 +422,21 @@
                 "shopMoney": {
                   "amount": "3.00"
                 }
-              }
+              },
+              "taxLines": [
+                {
+                  "title": "VAT",
+                  "rate": 0.255,
+                  "ratePercentage": 25.5,
+                  "priceSet": {
+                    "shopMoney": {
+                      "amount": "0.77"
+                    }
+                  },
+                  "source": "Shopify",
+                  "channelLiable": false
+                }
+              ]
             },
             "shippingAddress": {
               "country": "Finland",
@@ -348,7 +474,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1021"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "1.41"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -377,7 +517,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1061"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.80"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -406,7 +560,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1071"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.81"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 }
               ]
@@ -461,7 +629,8 @@
                 "shopMoney": {
                   "amount": "0.00"
                 }
-              }
+              },
+              "taxLines": []
             },
             "shippingAddress": {
               "country": "Finland",
@@ -491,7 +660,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1041"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.255,
+                        "ratePercentage": 25.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "3.80"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 },
                 {
@@ -512,7 +695,21 @@
                     },
                     "variant": {
                       "id": "gid://shopify/ProductVariant/1011"
-                    }
+                    },
+                    "taxLines": [
+                      {
+                        "title": "VAT",
+                        "rate": 0.135,
+                        "ratePercentage": 13.5,
+                        "priceSet": {
+                          "shopMoney": {
+                            "amount": "0.24"
+                          }
+                        },
+                        "source": "Shopify",
+                        "channelLiable": false
+                      }
+                    ]
                   }
                 }
               ]

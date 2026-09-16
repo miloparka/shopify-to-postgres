@@ -39,7 +39,9 @@ Supabase (PostgreSQL)   <- RLS-protected; only the service_role key can read/wri
 
 * **Sync orchestration** (`sync/sync_all.py`) -- runs customer, then products (+variants + images), then orders (+ line items + shippinh lines), in that order so foreign keys resolve, and upserts each batch via `supabase-py`. On failure, prints a `SYNC_FAILURE_REASON:` line identifying the likely cause (expired token, missing secret, schema mismatch, etc.) before re-raising, which the GitHub Actions workflows use to build their Slack alert.
 
-* **Database**: Supabase (PostgreSQL). Schema lives in `supabase/migrations/`. Tables: `customers`, `products`, `products_variants`, `product_images`, `orders`, `order_line_items`, `order_shipping_lines` plus a single-row `sync_state` table that stores the incremental-sync watermark.
+* **Database**: Supabase (PostgreSQL). Schema lives in `supabase/migrations/`. Tables: `customers`, `products`, `products_variants`, `product_images`, `orders`, `order_line_items`, `order_shipping_lines`, `order_line_item_tax_lines`, `order_shipping_line_tax_lines` plus a single-row `sync_state` table that stores the incremental-sync watermark.
+
+`order_line_item_tax_lines` and `order_shipping_line_tax_lines` capture Shopify's actual per-line tax data (`LineItem.taxLines` / `ShippingLine.taxLines`) -- rate, rate as a percentage, amount, source, and channel liability -- separately from the order-level `orders.total_tax`. Shopify tracks tax independently per line item and per shipping line (so, for example, a reduced-rate food item, a standard-rate non-food item, and shipping can each carry a different rate on the same order); this is what lets that be queried directly instead of only ever seeing one blended order total.
 
 ## How to run it
 ```bash
