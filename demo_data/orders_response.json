@@ -68,16 +68,13 @@
                     "title": "Fruit Chew Candy 14g",
                     "sku": "900001",
                     "quantity": 2,
+                    "currentQuantity": 2,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "0.89"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/101"
                     },
@@ -92,16 +89,13 @@
                     "title": "Corn Chips Bag 185g",
                     "sku": "900003",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "2.29"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/103"
                     },
@@ -116,16 +110,13 @@
                     "title": "Dried Birch Whisk",
                     "sku": "900005",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "6.50"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/105"
                     },
@@ -206,16 +197,13 @@
                     "title": "Family Board Game",
                     "sku": "900004",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "14.90"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/104"
                     },
@@ -230,16 +218,13 @@
                     "title": "Oat Porridge 1kg",
                     "sku": "900007",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "2.99"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/107"
                     },
@@ -254,16 +239,13 @@
                     "title": "Fruit Chew Candy 14g",
                     "sku": "900001",
                     "quantity": 8,
+                    "currentQuantity": 8,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "0.89"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/101"
                     },
@@ -297,13 +279,13 @@
             ],
             "currentTotalPriceSet": {
               "shopMoney": {
-                "amount": "28.48",
+                "amount": "22.58",
                 "currencyCode": "EUR"
               }
             },
             "currentSubtotalPriceSet": {
               "shopMoney": {
-                "amount": "22.35"
+                "amount": "16.45"
               }
             },
             "currentTotalTaxSet": {
@@ -313,7 +295,7 @@
             },
             "currentTotalDiscountsSet": {
               "shopMoney": {
-                "amount": "0.00"
+                "amount": "5.90"
               }
             },
             "currentShippingPriceSet": {
@@ -346,16 +328,21 @@
                     "title": "Aged Cheese Wedge 400g",
                     "sku": "900002",
                     "quantity": 3,
+                    "currentQuantity": 3,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "3.49"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
+                    "discountAllocations": [
+                      {
+                        "allocatedAmountSet": {
+                          "shopMoney": {
+                            "amount": "2.76"
+                          }
+                        }
                       }
-                    },
+                    ],
                     "product": {
                       "id": "gid://shopify/Product/102"
                     },
@@ -370,16 +357,21 @@
                     "title": "Chocolate Truffle Box 200g",
                     "sku": "900006",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "5.90"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
+                    "discountAllocations": [
+                      {
+                        "allocatedAmountSet": {
+                          "shopMoney": {
+                            "amount": "1.56"
+                          }
+                        }
                       }
-                    },
+                    ],
                     "product": {
                       "id": "gid://shopify/Product/106"
                     },
@@ -394,16 +386,21 @@
                     "title": "Oat Porridge 1kg",
                     "sku": "900007",
                     "quantity": 2,
+                    "currentQuantity": 2,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "2.99"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
+                    "discountAllocations": [
+                      {
+                        "allocatedAmountSet": {
+                          "shopMoney": {
+                            "amount": "1.58"
+                          }
+                        }
                       }
-                    },
+                    ],
                     "product": {
                       "id": "gid://shopify/Product/107"
                     },
@@ -482,16 +479,13 @@
                     "title": "Family Board Game",
                     "sku": "900004",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "14.90"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/104"
                     },
@@ -506,16 +500,13 @@
                     "title": "Fruit Chew Candy 14g",
                     "sku": "900001",
                     "quantity": 2,
+                    "currentQuantity": 2,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "0.89"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/101"
                     },
@@ -594,16 +585,13 @@
                     "title": "Dried Birch Whisk",
                     "sku": "900005",
                     "quantity": 1,
+                    "currentQuantity": 1,
                     "originalUnitPriceSet": {
                       "shopMoney": {
                         "amount": "6.50"
                       }
                     },
-                    "totalDiscountSet": {
-                      "shopMoney": {
-                        "amount": "0.00"
-                      }
-                    },
+                    "discountAllocations": [],
                     "product": {
                       "id": "gid://shopify/Product/105"
                     },

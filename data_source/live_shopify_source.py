@@ -5,39 +5,6 @@ import requests
 
 from .interface import ShopifyDataSource
 
-# NOTE ON FIELD VERIFICATION
-# ---------------------------------------------------------------------------
-# Every field below has now been checked against Shopify's official
-# GraphQL Admin object-reference docs (Order, LineItem, Customer, Product,
-# ProductVariant -- 2026-07). Corrections made during that pass:
-#   - Order.totalShippingPriceSet does not exist -- replaced with
-#     Order.currentShippingPriceSet (the non-deprecated MoneyBag field).
-#   - Customer.emailMarketingConsent is deprecated -- replaced with
-#     Customer.defaultEmailAddress { marketingState }.
-#   - ProductVariant.weight / weightUnit / requiresShipping are not fields
-#     on ProductVariant at all -- weight/unit and requiresShipping live on
-#     the variant's InventoryItem instead, so the query now nests
-#     inventoryItem { requiresShipping measurement { weight { value unit } } }.
-#   - LineItem.fulfillmentStatus is present but marked deprecated in the
-#     docs (Shopify recommends tracking fulfillment via the Order's
-#     fulfillments/fulfillmentOrders instead); left as-is since it's still
-#     functional and this schema doesn't model fulfillments separately, but
-#     worth revisiting if per-fulfillment detail is ever needed.
-#   - Product.images is deprecated in favor of Product.media
-#     (MediaConnection), but kept as-is here since it's simpler and still
-#     functional -- migrate to media if Shopify ever removes `images`.
-#
-# Everything else (id, title, vendor, createdAt, updatedAt, sku, barcode,
-# price, metafields, numberOfOrders, amountSpent, name,
-# currentTotalPriceSet, shippingLine.title, shippingAddress.city,
-# customer.id, lineItems, descriptionHtml, status, handle, tags,
-# publishedAt, compareAtPrice, inventoryQuantity, taxable, position,
-# images, state, verifiedEmail, taxExempt, locale, defaultAddress,
-# displayFinancialStatus, displayFulfillmentStatus, sourceName,
-# discountCodes, cancelReason, processedAt/cancelledAt/closedAt,
-# shippingLine price/code, lineItem sku/variant/totalDiscountSet) matched
-# the docs as originally written.
-#
 # Operational note: by default `orders(...)` only returns orders from the
 # last 60 days. Older orders require the `read_all_orders` scope (approved
 # per-app by Shopify) or, for point-of-sale "quick sale" orders,
@@ -170,9 +137,10 @@ query Orders($cursor: String, $query: String) {
               title
               sku
               quantity
+              currentQuantity
               fulfillmentStatus
               originalUnitPriceSet { shopMoney { amount } }
-              totalDiscountSet { shopMoney { amount } }
+              discountAllocations { allocatedAmountSet { shopMoney { amount } } }
               product { id }
               variant { id }
             }

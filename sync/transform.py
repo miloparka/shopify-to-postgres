@@ -28,6 +28,62 @@ def _money(price_set: dict | None) -> float | None:
     return float(amount) if amount is not None else None
 
 
+def _sum_discount_allocations(allocations: list[dict] | None) -> float:
+    """Sum a LineItem's discountAllocations into a single total_discount
+    figure. Deliberately NOT reading LineItem.totalDiscountSet -- per
+    Shopify's own docs that field "doesn't include order-level discounts",
+    so a discount code or automatic discount applied to the whole order
+    (as opposed to one entered directly on a specific line) never shows up
+    there, and it silently reads 0.00 on a genuinely discounted line.
+    discountAllocations is the complete list of discounts apportioned to
+    this line regardless of where the discount was applied, so summing it
+    is the correct total. An order with no discount at all simply has an
+    empty list here, which sums to 0.0 -- same result as before for the
+    common case, just correct now for the discounted one too."""
+    if not allocations:
+        return 0.0
+    total = 0.0
+    for allocation in allocations:
+        amount = ((allocation.get("allocatedAmountSet") or {}).get("shopMoney") or {}).get("amount")
+        if amount is not None:
+            total += float(amount)
+    # Round to cents: summing several string-decimal amounts as floats can
+    # otherwise leave a value like 3.8999999999999995 that's cosmetically
+    # wrong (though the numeric(12,2) column would round it on write anyway).
+    return round(total, 2)
+
+
+def _prorate_for_current_quantity(discount: float, quantity: int, current_quantity: int) -> float:
+    """Scale a line's total discount down to reflect only its still-active
+    (non-refunded, non-removed) quantity.
+
+    Why this is needed: LineItem.discountAllocations includes discounts
+    allocated to refunded/removed units (per Shopify's own docs), but every
+    other financial field this schema reads at the order level
+    (orders.total_discounts, total_price, subtotal_price, ...) comes from
+    Shopify's current*Set fields, which already net refunds/edits out. So
+    without this adjustment, a partially or fully refunded line keeps
+    reporting its full original discount forever, while the order-level
+    total it's supposed to add up to has already dropped -- this is
+    exactly what production order #66678 showed: order-level
+    total_discounts read 0.00 after a refund, while the line's raw
+    discountAllocations sum still read its original, pre-refund value.
+
+    quantity is the line's original ordered quantity (including refunded/
+    removed units); current_quantity is what's left after refunds/removals
+    (Shopify's own distinction: LineItem.quantity vs LineItem.currentQuantity).
+    This assumes the discount was distributed evenly per unit across the
+    line, which holds for ordinary percentage/fixed discounts -- a
+    non-uniform discount (e.g. a tiered "buy 2 get 1 free" applied
+    asymmetrically across units) could prorate slightly differently than
+    Shopify's own internal accounting, but there's no Shopify field that
+    exposes an exact current-discount amount directly to check against."""
+    if quantity <= 0:
+        return 0.0
+    current_quantity = max(0, min(current_quantity, quantity))
+    return round(discount * current_quantity / quantity, 2)
+
+
 def transform_customer(node: dict) -> dict:
     address = node.get("defaultAddress") or {}
     marketing = node.get("defaultEmailAddress") or {}
@@ -161,6 +217,13 @@ def transform_order(node: dict) -> tuple[dict, list[dict]]:
         li = edge["node"]
         product = li.get("product")
         variant = li.get("variant")
+        quantity = li["quantity"]
+        # Falls back to quantity (i.e. "nothing refunded") if currentQuantity
+        # is ever missing, e.g. an older cached response shaped before this
+        # field was added to the query -- never divides by a smaller number
+        # than what's actually there.
+        current_quantity = li.get("currentQuantity", quantity)
+        raw_discount = _sum_discount_allocations(li.get("discountAllocations"))
         line_item_rows.append({
             "id": extract_numeric_id(li["id"]),
             "order_id": extract_numeric_id(node["id"]),
@@ -168,9 +231,9 @@ def transform_order(node: dict) -> tuple[dict, list[dict]]:
             "variant_id": extract_numeric_id(variant["id"]) if variant else None,
             "title": li["title"],
             "sku": li.get("sku"),
-            "quantity": li["quantity"],
+            "quantity": quantity,
             "price": _money(li.get("originalUnitPriceSet")),
-            "total_discount": _money(li.get("totalDiscountSet")),
+            "total_discount": _prorate_for_current_quantity(raw_discount, quantity, current_quantity),
             "fulfillment_status": li.get("fulfillmentStatus"),
         })
 
