@@ -1,4 +1,65 @@
-"""Tests for sync/transform.py, focused on the per-line tax capture
+"""
+Regression tests for sync/transform.py's discount handling.
+
+Context: order_line_items.total_discount was found to always read 0.00 in
+production even on orders with a real discount, because the sync read
+LineItem.totalDiscountSet -- which Shopify's own docs say "doesn't include
+order-level discounts" (a discount code or automatic discount applied to
+the whole order, as opposed to one entered directly on a line, never shows
+up there). The fix sums LineItem.discountAllocations instead, which covers
+discounts from any source. These tests pin that behavior down so it can't
+silently regress back to the old (broken) field.
+"""
+
+import json
+from pathlib import Path
+
+from sync.transform import _sum_discount_allocations, transform_order
+
+DEMO_DATA_DIR = Path(__file__).parent.parent / "demo_data"
+
+
+def test_sum_discount_allocations_multiple():
+    allocations = [
+        {"allocatedAmountSet": {"shopMoney": {"amount": "2.76"}}},
+        {"allocatedAmountSet": {"shopMoney": {"amount": "1.14"}}},
+    ]
+    assert _sum_discount_allocations(allocations) == 3.90
+
+
+def test_sum_discount_allocations_empty_or_missing():
+    assert _sum_discount_allocations([]) == 0.0
+    assert _sum_discount_allocations(None) == 0.0
+
+
+def test_transform_order_line_item_discount_from_order_level_code():
+    """The exact bug scenario: an order-level discount code (not a
+    per-line discount) should show up on each affected line item's
+    total_discount, and the line items should sum back to the order's own
+    total_discounts -- not read 0.00 like the old totalDiscountSet-based
+    code did."""
+    data = json.loads((DEMO_DATA_DIR / "orders_response.json").read_text())
+    orders = {edge["node"]["name"]: edge["node"] for edge in data["data"]["orders"]["edges"]}
+
+    node = orders["#1003"]  # has discountCodes: ["WELCOME10"]
+    order_row, line_items, _ = transform_order(node)
+
+    assert order_row["total_discounts"] == 5.90
+    assert [li["total_discount"] for li in line_items] == [2.76, 1.56, 1.58]
+    assert round(sum(li["total_discount"] for li in line_items), 2) == 5.90
+
+
+def test_transform_order_line_item_discount_zero_when_undiscounted():
+    data = json.loads((DEMO_DATA_DIR / "orders_response.json").read_text())
+    orders = {edge["node"]["name"]: edge["node"] for edge in data["data"]["orders"]["edges"]}
+
+    node = orders["#1001"]  # no discount code, no line-level discount
+    order_row, line_items, _ = transform_order(node)
+
+    assert order_row["total_discounts"] == 0.0
+    assert all(li["total_discount"] == 0.0 for li in line_items)
+
+    """Tests for sync/transform.py, focused on the per-line tax capture
 (order_line_item_tax_lines / order_shipping_line_tax_lines) added on top
 of the existing discount-allocation fix.
 
